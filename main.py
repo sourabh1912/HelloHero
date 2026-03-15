@@ -8,10 +8,12 @@ from PIL import Image
 from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
+from dotenv import load_dotenv
 # 1. Setup the Client
 # Ensure your GEMINI_API_KEY is set in your environment variables
 app = FastAPI()
-client = genai.Client(api_key="")
+load_dotenv()
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 class ImageRequest(BaseModel):
     base64Image: str
