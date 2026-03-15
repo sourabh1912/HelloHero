@@ -17,3 +17,10 @@ dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - resources/Real_rocky_bhai.jpg
+    - resources/Halogen_sample.jpg
+    - resources/Retro_style_sample.jpg
+    - resources/gym_sample.jpg
+    - resources/Mafia_boss_sample.jpg
+    - resources/Rainy_window_sample.jpg
