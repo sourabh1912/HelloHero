@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:typed_data';
+import 'package:path_provider/path_provider.dart';
+import 'package:gal/gal.dart';
 
 void main() => runApp(MaterialApp(home: RockyTransformApp(), theme: ThemeData.dark()));
 
@@ -65,6 +68,34 @@ class _RockyTransformAppState extends State<RockyTransformApp> {
     }
   }
 
+  Future<void> _saveBhaiImage() async {
+    if (_base64Result == null) return;
+
+    try {
+      // 1. Decode your existing base64 variable
+      Uint8List bytes = base64Decode(_base64Result!);
+
+      // 2. Create a temporary file path
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/rocky_bhai_${DateTime.now().millisecondsSinceEpoch}.png');
+      
+      // 3. Write bytes to the file
+      await file.writeAsBytes(bytes);
+
+      // 4. Save to actual Gallery
+      await Gal.putImage(file.path);
+
+      // 5. Show a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Saved to Gallery, Bhai!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +119,16 @@ class _RockyTransformAppState extends State<RockyTransformApp> {
               ),
             ),
           ),
-
+          if (_base64Result != null && !_isLoading)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton.icon(
+                onPressed: _saveBhaiImage, // Your save function
+                icon: Icon(Icons.download, color: Colors.black),
+                label: Text("SAVE TO GALLERY"),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+              ),
+            ),
           // Control Buttons
           Padding(
             padding: const EdgeInsets.only(bottom: 40),

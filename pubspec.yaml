@@ -12,3 +12,5 @@ dependencies:
   image_picker: ^1.2.1
   http: ^1.1.0
   flutter_spinkit: ^5.2.0
+  gal: ^2.3.2
+  path_provider: ^2.1.2
