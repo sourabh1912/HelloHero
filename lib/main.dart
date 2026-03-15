@@ -8,7 +8,27 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:gal/gal.dart';
 
-void main() => runApp(MaterialApp(home: RockyTransformApp(), theme: ThemeData.dark()));
+void main() => runApp(
+      MaterialApp(
+        home: RockyTransformApp(),
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: const Color(0xFF050814),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFF0D47A1),
+            foregroundColor: Colors.white,
+            elevation: 4,
+            centerTitle: true,
+          ),
+          colorScheme: const ColorScheme.dark(
+            primary: Color(0xFFFFC400), // Vibrant gold
+            secondary: Color(0xFF00E5FF), // Neon cyan
+            surface: Color(0xFF101624),
+            onPrimary: Colors.black,
+            onSecondary: Colors.black,
+          ),
+        ),
+      ),
+    );
 
 class RockyTransformApp extends StatefulWidget {
   @override
@@ -124,9 +144,17 @@ class _RockyTransformAppState extends State<RockyTransformApp> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ElevatedButton.icon(
                 onPressed: _saveBhaiImage, // Your save function
-                icon: Icon(Icons.download, color: Colors.black),
-                label: Text("SAVE TO GALLERY"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+                icon: const Icon(Icons.download),
+                label: const Text("SAVE TO GALLERY"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFFC400),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 6,
+                ),
               ),
             ),
           // Control Buttons
@@ -137,17 +165,33 @@ class _RockyTransformAppState extends State<RockyTransformApp> {
               children: [
                 ElevatedButton.icon(
                   onPressed: _pickImage,
-                  icon: Icon(Icons.photo_library),
-                  label: Text("Gallery"),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text("Gallery"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00E5FF),
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 6,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: _isLoading ? null : _transformToRocky,
-                  child: Text("ENTER KGF (Rocky Style)", style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    "ENTER KGF (Rocky Style)",
+                    style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
+                  ),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[700],
-                      foregroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15)
+                      backgroundColor: const Color(0xFFFF3D00),
+                      disabledBackgroundColor: Colors.grey[800],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 10,
                   ),
                 ),
               ],
