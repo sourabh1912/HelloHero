@@ -3,16 +3,29 @@ import base64
 import pickle
 from google import genai
 from google.genai import types
+from google.genai.types import HttpOptions
 from PIL import Image
 from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 
 from dotenv import load_dotenv
-# 1. Setup the Client
-# Ensure your GEMINI_API_KEY is set in your environment variables
-app = FastAPI()
+
+# 1. Load env (for Vertex AI: GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION)
 load_dotenv()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+# 2. Vertex AI client (uses Application Default Credentials; no API key)
+# Requires in .env or environment: GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, GOOGLE_GENAI_USE_VERTEXAI=True
+os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
+project = os.getenv("GOOGLE_CLOUD_PROJECT")
+if not project:
+    raise ValueError(
+        "GOOGLE_CLOUD_PROJECT must be set for Vertex AI. "
+        "Add it to .env or set the environment variable."
+    )
+os.environ.setdefault("GOOGLE_CLOUD_LOCATION", "us-central1")
+
+app = FastAPI()
+client = genai.Client(http_options=HttpOptions(api_version="v1"))
 
 class ImageRequest(BaseModel):
     base64Image: str
@@ -97,9 +110,9 @@ async def transform_image(request: ImageRequest):
 
 
 
-    # 5. Call Gemini 3.1 Flash (Nano Banana 2)
+    # 5. Call Vertex AI Gemini image model (Gemini 2.5 Flash Image)
     response = client.models.generate_content(
-        model="gemini-3.1-flash-image-preview",
+        model="gemini-2.5-flash-image",
         config=types.GenerateContentConfig(
             system_instruction=system_instruction,
             # Tell the model we want an image back
