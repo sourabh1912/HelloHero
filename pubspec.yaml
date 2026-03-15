@@ -1,0 +1,14 @@
+name: bhai_ai_transform
+description: "A transformation app"
+publish_to: 'none'
+
+# ADD THIS SECTION BELOW
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.2.1
+  http: ^1.1.0
+  flutter_spinkit: ^5.2.0
